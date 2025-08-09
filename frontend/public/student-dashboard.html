@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - QuizzyVerse</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #2d3748;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 800;
+            color: #2d3748;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .notification-btn {
+            position: relative;
+            background: none;
+            border: none;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: #718096;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+
+        .notification-btn:hover {
+            background: #f7fafc;
+            color: #2d3748;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #f56565;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+            background: #f7fafc;
+            border-radius: 12px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .user-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .user-info p {
+            font-size: 12px;
+            color: #718096;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 32px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .welcome-section {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 20px;
+            padding: 40px;
+            color: white;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .welcome-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .welcome-subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 24px;
+        }
+
+        .new-user-stats {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-top: 24px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* Getting Started Section */
+        .getting-started {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .step-card {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .step-card:hover {
+            transform: translateY(-4px);
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            margin: 0 auto 16px auto;
+        }
+
+        .step-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .step-description {
+            font-size: 14px;
+            color: #718096;
+            margin-bottom: 16px;
+        }
+
+        .step-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .step-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Empty State */
+        .empty-state {
+            background: white;
+            border-radius: 16px;
+            padding: 48px 32px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .empty-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #e2e8f0, #cbd5e0);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px auto;
+            color: #718096;
+            font-size: 32px;
+        }
+
+        .empty-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .empty-description {
+            font-size: 16px;
+            color: #718096;
+            margin-bottom: 24px;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px 16px;
+            }
+
+            .welcome-section {
+                padding: 24px;
+            }
+
+            .welcome-title {
+                font-size: 24px;
+            }
+
+            .new-user-stats {
+                gap: 20px;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="logo-text">QuizzyVerse</div>
+        </div>
+        
+        <div class="header-right">
+            <button class="notification-btn" onclick="openNotifications()">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="notificationBadge">0</span>
+            </button>
+
+            <div class="user-profile">
+                <div class="user-avatar" id="userAvatar">--</div>
+                <div class="user-info">
+                    <h4 id="userName">New Student</h4>
+                    <p>Student</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <h1 class="welcome-title" id="welcomeTitle">Welcome to QuizzyVerse!</h1>
+            <p class="welcome-subtitle">Let's get you started on your learning journey</p>
+            
+            <div class="new-user-stats">
+                <div class="stat">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Courses Enrolled</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Quizzes Taken</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Hours Studied</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Getting Started Section -->
+        <section class="getting-started">
+            <h2 class="section-title">
+                <div class="section-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                Getting Started
+            </h2>
+            <p style="color: #718096; margin-bottom: 24px;">Follow these simple steps to begin your learning journey</p>
+            
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Complete Your Profile</h3>
+                    <p class="step-description">Add your personal information and learning preferences</p>
+                    <a href="#" class="step-button">
+                        <i class="fas fa-user"></i>
+                        Complete Profile
+                    </a>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Browse Courses</h3>
+                    <p class="step-description">Explore our wide range of courses and subjects</p>
+                    <a href="#" class="step-button">
+                        <i class="fas fa-book"></i>
+                        Browse Courses
+                    </a>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Take Your First Quiz</h3>
+                    <p class="step-description">Start with a practice quiz to test your knowledge</p>
+                    <a href="#" class="step-button">
+                        <i class="fas fa-play"></i>
+                        Start Quiz
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Empty Activity State -->
+        <section class="empty-state">
+            <div class="empty-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <h3 class="empty-title">No Activity Yet</h3>
+            <p class="empty-description">
+                Your learning activity will appear here once you start taking quizzes and completing courses.
+            </p>
+            <a href="#" class="cta-button">
+                <i class="fas fa-play"></i>
+                Take Your First Quiz
+            </a>
+        </section>
+    </main>
+
+    <script>
+        // Load user data and customize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            const userData = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            
+            if (userData.firstName && userData.lastName) {
+                const fullName = `${userData.firstName} ${userData.lastName}`;
+                const initials = `${userData.firstName.charAt(0)}${userData.lastName.charAt(0)}`;
+                
+                document.getElementById('userName').textContent = fullName;
+                document.getElementById('userAvatar').textContent = initials;
+                document.getElementById('welcomeTitle').textContent = `Welcome, ${userData.firstName}!`;
+            }
+            
+            // Add click handlers for getting started steps
+            document.querySelectorAll('.step-button, .cta-button').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const action = this.textContent.trim();
+
+                    if (action.includes('Profile')) {
+                        completeProfile();
+                    } else if (action.includes('Courses')) {
+                        browseCourses();
+                    } else if (action.includes('Quiz')) {
+                        takeQuiz();
+                    }
+                });
+            });
+
+            // Update notification badge
+            updateNotificationBadge();
+        });
+
+        // COMPREHENSIVE STUDENT DASHBOARD FUNCTIONS
+
+        // PROFILE COMPLETION
+        function completeProfile() {
+            const firstName = prompt('Enter your first name:');
+            if (!firstName) return;
+
+            const lastName = prompt('Enter your last name:');
+            if (!lastName) return;
+
+            const phone = prompt('Enter your phone number:');
+            if (!phone) return;
+
+            const dateOfBirth = prompt('Enter your date of birth (YYYY-MM-DD):');
+            if (!dateOfBirth) return;
+
+            const userData = getCurrentUser();
+            const profileData = {
+                firstName: firstName,
+                lastName: lastName,
+                phone: phone,
+                dateOfBirth: dateOfBirth,
+                email: userData.email,
+                completedAt: new Date().toISOString()
+            };
+
+            // Update user data
+            userData.firstName = firstName;
+            userData.lastName = lastName;
+            userData.profileComplete = true;
+
+            localStorage.setItem('currentUser', JSON.stringify(userData));
+            localStorage.setItem(`student_profile_${userData.email}`, JSON.stringify(profileData));
+
+            // Update display
+            document.getElementById('userName').textContent = `${firstName} ${lastName}`;
+            document.getElementById('userAvatar').textContent = `${firstName.charAt(0)}${lastName.charAt(0)}`;
+            document.getElementById('welcomeTitle').textContent = `Welcome, ${firstName}!`;
+
+            alert('Profile completed successfully!');
+        }
+
+        // COURSE MANAGEMENT
+        function browseCourses() {
+            // Load available course invitations
+            const notifications = JSON.parse(localStorage.getItem(`notifications_${getCurrentUser().email}`) || '[]');
+            const courseInvites = notifications.filter(n => n.type === 'course_invitation' && !n.read);
+
+            if (courseInvites.length === 0) {
+                alert('No course invitations available at the moment.\nYour teachers will send you invitations when courses are available.');
+                return;
+            }
+
+            let invitesList = 'Available Course Invitations:\n\n';
+            courseInvites.forEach((invite, index) => {
+                invitesList += `${index + 1}. ${invite.classroomName}\n   Teacher: ${invite.teacherName}\n   ${invite.message}\n\n`;
+            });
+
+            const choice = prompt(invitesList + 'Enter the number of the course you want to join (or 0 to cancel):');
+            const choiceIndex = parseInt(choice) - 1;
+
+            if (choiceIndex >= 0 && choiceIndex < courseInvites.length) {
+                acceptCourseInvitation(courseInvites[choiceIndex]);
+            }
+        }
+
+        function acceptCourseInvitation(invite) {
+            // Add course to enrolled courses
+            const userData = getCurrentUser();
+            const studentData = getStudentData();
+
+            const newCourse = {
+                id: invite.classroomId,
+                name: invite.classroomName,
+                teacherName: invite.teacherName,
+                enrolledAt: new Date().toISOString(),
+                progress: 0,
+                status: 'active'
+            };
+
+            studentData.enrolledCourses = studentData.enrolledCourses || [];
+            studentData.enrolledCourses.push(newCourse);
+
+            // Update activity history
+            const newActivity = {
+                id: Date.now().toString(),
+                type: 'course_enrolled',
+                title: `Enrolled in ${invite.classroomName}`,
+                date: new Date().toISOString(),
+                description: `Successfully joined ${invite.classroomName} taught by ${invite.teacherName}`
+            };
+
+            studentData.activityHistory = studentData.activityHistory || [];
+            studentData.activityHistory.push(newActivity);
+
+            // Update user data
+            userData.hasActivity = true;
+            userData.coursesEnrolled = (userData.coursesEnrolled || 0) + 1;
+
+            saveStudentData(studentData);
+            localStorage.setItem('currentUser', JSON.stringify(userData));
+
+            // Mark notification as read
+            const notifications = JSON.parse(localStorage.getItem(`notifications_${userData.email}`) || '[]');
+            const updatedNotifications = notifications.map(n =>
+                n.id === invite.id ? { ...n, read: true } : n
+            );
+            localStorage.setItem(`notifications_${userData.email}`, JSON.stringify(updatedNotifications));
+
+            alert(`Successfully joined ${invite.classroomName}!\nYou can now participate in quizzes and activities.`);
+
+            // Update stats display
+            updateStudentStats();
+        }
+
+        // QUIZ SYSTEM
+        function takeQuiz() {
+            // Load available quiz notifications
+            const notifications = JSON.parse(localStorage.getItem(`notifications_${getCurrentUser().email}`) || '[]');
+            const quizNotifications = notifications.filter(n => n.type === 'quiz_assigned' && !n.read);
+
+            if (quizNotifications.length === 0) {
+                // Simulate a practice quiz for demo
+                simulateQuizActivity();
+                return;
+            }
+
+            let quizList = 'Available Quizzes:\n\n';
+            quizNotifications.forEach((quiz, index) => {
+                quizList += `${index + 1}. ${quiz.message}\n\n`;
+            });
+
+            const choice = prompt(quizList + 'Enter the number of the quiz you want to take (or 0 to cancel):');
+            const choiceIndex = parseInt(choice) - 1;
+
+            if (choiceIndex >= 0 && choiceIndex < quizNotifications.length) {
+                takeSpecificQuiz(quizNotifications[choiceIndex]);
+            }
+        }
+
+        function takeSpecificQuiz(quizNotification) {
+            const quizTitle = quizNotification.message.split('"')[1] || 'Quiz';
+
+            // Simulate taking quiz
+            const score = Math.floor(Math.random() * 40) + 60; // Random score between 60-100
+
+            const userData = getCurrentUser();
+            const studentData = getStudentData();
+
+            // Add completed quiz
+            const completedQuiz = {
+                id: quizNotification.quizId,
+                title: quizTitle,
+                score: score,
+                completedAt: new Date().toISOString(),
+                classroomName: quizNotification.classroomName || 'Unknown Class'
+            };
+
+            studentData.completedQuizzes = studentData.completedQuizzes || [];
+            studentData.completedQuizzes.push(completedQuiz);
+
+            // Update activity history
+            const newActivity = {
+                id: Date.now().toString(),
+                type: 'quiz_completed',
+                title: `Completed ${quizTitle}`,
+                date: new Date().toISOString(),
+                description: `Scored ${score}% on ${quizTitle}`,
+                score: score
+            };
+
+            studentData.activityHistory = studentData.activityHistory || [];
+            studentData.activityHistory.push(newActivity);
+
+            // Update user data
+            userData.hasActivity = true;
+            userData.quizzesTaken = (userData.quizzesTaken || 0) + 1;
+            userData.averageScore = score; // Simplified - in real app would calculate average
+
+            saveStudentData(studentData);
+            localStorage.setItem('currentUser', JSON.stringify(userData));
+
+            // Mark notification as read
+            const notifications = JSON.parse(localStorage.getItem(`notifications_${userData.email}`) || '[]');
+            const updatedNotifications = notifications.map(n =>
+                n.id === quizNotification.id ? { ...n, read: true } : n
+            );
+            localStorage.setItem(`notifications_${userData.email}`, JSON.stringify(updatedNotifications));
+
+            alert(`Quiz completed!\n\nQuiz: ${quizTitle}\nScore: ${score}%\n\nYour performance has been recorded.`);
+
+            // Update stats display
+            updateStudentStats();
+        }
+
+        function simulateQuizActivity() {
+            if (confirm('Take a practice quiz? This will create your first activity record.')) {
+                // Simulate quiz completion
+                setTimeout(() => {
+                    const userData = getCurrentUser();
+                    const studentData = getStudentData();
+
+                    const score = 85;
+                    const quizTitle = 'Mathematics Basics Quiz';
+
+                    // Add completed quiz
+                    const completedQuiz = {
+                        id: Date.now().toString(),
+                        title: quizTitle,
+                        score: score,
+                        completedAt: new Date().toISOString(),
+                        classroomName: 'Practice'
+                    };
+
+                    studentData.completedQuizzes = studentData.completedQuizzes || [];
+                    studentData.completedQuizzes.push(completedQuiz);
+
+                    // Update activity history
+                    const newActivity = {
+                        id: Date.now().toString(),
+                        type: 'quiz_completed',
+                        title: `Completed ${quizTitle}`,
+                        date: new Date().toISOString(),
+                        description: `Scored ${score}% on ${quizTitle}`,
+                        score: score
+                    };
+
+                    studentData.activityHistory = studentData.activityHistory || [];
+                    studentData.activityHistory.push(newActivity);
+
+                    // Update user data with activity
+                    userData.hasActivity = true;
+                    userData.quizzesTaken = 1;
+                    userData.coursesEnrolled = 1;
+                    userData.hoursStudied = 2;
+                    userData.averageScore = score;
+
+                    saveStudentData(studentData);
+                    localStorage.setItem('currentUser', JSON.stringify(userData));
+
+                    // Update registered users list
+                    const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+                    const userIndex = registeredUsers.findIndex(user => user.email === userData.email);
+                    if (userIndex !== -1) {
+                        registeredUsers[userIndex] = userData;
+                        localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+                    }
+
+                    alert(`Quiz completed! Score: ${score}%\nYou now have activity history. Redirecting to your updated dashboard...`);
+
+                    // Redirect to dashboard with activity
+                    window.location.href = 'dashboard.html';
+                }, 2000);
+
+                // Show loading
+                alert('Taking quiz... Please wait...');
+            }
+        }
+
+        // CONSULTATION MANAGEMENT
+        function viewConsultationInvites() {
+            const notifications = JSON.parse(localStorage.getItem(`notifications_${getCurrentUser().email}`) || '[]');
+            const consultationInvites = notifications.filter(n => n.type === 'consultation_scheduled' && !n.read);
+
+            if (consultationInvites.length === 0) {
+                alert('No consultation invitations at the moment.');
+                return;
+            }
+
+            let invitesList = 'Consultation Invitations:\n\n';
+            consultationInvites.forEach((invite, index) => {
+                invitesList += `${index + 1}. ${invite.title}\n   Teacher: ${invite.teacherName}\n   Topic: ${invite.topic}\n   Date: ${invite.scheduledDate} at ${invite.scheduledTime}\n\n`;
+            });
+
+            const choice = prompt(invitesList + 'Enter the number of the consultation you want to accept (or 0 to cancel):');
+            const choiceIndex = parseInt(choice) - 1;
+
+            if (choiceIndex >= 0 && choiceIndex < consultationInvites.length) {
+                acceptConsultationInvite(consultationInvites[choiceIndex]);
+            }
+        }
+
+        function acceptConsultationInvite(invite) {
+            const userData = getCurrentUser();
+            const studentData = getStudentData();
+
+            // Add to accepted consultations
+            const consultation = {
+                id: invite.consultationId,
+                teacherName: invite.teacherName,
+                topic: invite.topic,
+                scheduledDate: invite.scheduledDate,
+                scheduledTime: invite.scheduledTime,
+                status: 'accepted',
+                acceptedAt: new Date().toISOString()
+            };
+
+            studentData.consultations = studentData.consultations || [];
+            studentData.consultations.push(consultation);
+
+            // Update activity history
+            const newActivity = {
+                id: Date.now().toString(),
+                type: 'consultation_accepted',
+                title: `Consultation Scheduled`,
+                date: new Date().toISOString(),
+                description: `Accepted consultation with ${invite.teacherName} for ${invite.topic}`
+            };
+
+            studentData.activityHistory = studentData.activityHistory || [];
+            studentData.activityHistory.push(newActivity);
+
+            saveStudentData(studentData);
+
+            // Mark notification as read
+            const notifications = JSON.parse(localStorage.getItem(`notifications_${userData.email}`) || '[]');
+            const updatedNotifications = notifications.map(n =>
+                n.id === invite.id ? { ...n, read: true } : n
+            );
+            localStorage.setItem(`notifications_${userData.email}`, JSON.stringify(updatedNotifications));
+
+            alert(`Consultation accepted!\n\nTeacher: ${invite.teacherName}\nTopic: ${invite.topic}\nDate: ${invite.scheduledDate} at ${invite.scheduledTime}\n\nYou will receive a reminder before the meeting.`);
+        }
+
+        // UTILITY FUNCTIONS
+        function getCurrentUser() {
+            return JSON.parse(localStorage.getItem('currentUser') || '{}');
+        }
+
+        function getStudentData() {
+            const user = getCurrentUser();
+            return JSON.parse(localStorage.getItem(`student_${user.email}`) || '{}');
+        }
+
+        function saveStudentData(data) {
+            const user = getCurrentUser();
+            localStorage.setItem(`student_${user.email}`, JSON.stringify(data));
+        }
+
+        function updateStudentStats() {
+            const userData = getCurrentUser();
+            const studentData = getStudentData();
+
+            // Update stats display
+            document.querySelector('.stat-number').textContent = studentData.enrolledCourses?.length || 0;
+            document.querySelectorAll('.stat-number')[1].textContent = studentData.completedQuizzes?.length || 0;
+            document.querySelectorAll('.stat-number')[2].textContent = userData.hoursStudied || 0;
+        }
+
+        // NOTIFICATION FUNCTIONS
+        function updateNotificationBadge() {
+            const user = getCurrentUser();
+            const notifications = JSON.parse(localStorage.getItem(`notifications_${user.email}`) || '[]');
+            const unreadCount = notifications.filter(n => !n.read).length;
+
+            const badge = document.getElementById('notificationBadge');
+            if (badge) {
+                badge.textContent = unreadCount;
+                badge.style.display = unreadCount > 0 ? 'flex' : 'none';
+            }
+        }
+
+        function openNotifications() {
+            window.location.href = 'notifications.html';
+        }
+
+        // Update notification badge periodically
+        setInterval(updateNotificationBadge, 30000); // Update every 30 seconds
+        });
+    </script>
+</body>
+</html>

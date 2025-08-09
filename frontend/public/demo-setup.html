@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizzyVerse Demo Setup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .demo-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>QuizzyVerse Demo Setup</h1>
+        <p>This page helps you set up demo data to test the new user vs existing user functionality.</p>
+        
+        <div class="demo-section">
+            <h3>Demo Users Setup</h3>
+            <p>Click the buttons below to create demo users with different activity levels:</p>
+            
+            <button onclick="createNewStudent()">Create New Student (No Activity)</button>
+            <button onclick="createExistingStudent()">Create Existing Student (With Activity)</button>
+            <button onclick="createNewTeacher()">Create New Teacher (No Activity)</button>
+            <button onclick="createExistingTeacher()">Create Existing Teacher (With Activity)</button>
+            
+            <div id="setupStatus"></div>
+        </div>
+        
+        <div class="demo-section">
+            <h3>Test Login Credentials</h3>
+            <div class="info">
+                <strong>New Users (No Activity):</strong><br>
+                • Student: newstudent@university.edu / password123<br>
+                • Teacher: newteacher@school.edu / password123<br><br>
+                
+                <strong>Existing Users (With Activity):</strong><br>
+                • Student: student@university.edu / password123<br>
+                • Teacher: teacher@school.edu / password123
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h3>Clear All Data</h3>
+            <button onclick="clearAllData()" style="background: #dc3545;">Clear All Demo Data</button>
+            <p><small>This will remove all demo users and reset the system.</small></p>
+        </div>
+        
+        <div class="demo-section">
+            <h3>Quick Links</h3>
+            <a href="login.html"><button>Go to Login Page</button></a>
+            <a href="signup.html"><button>Go to Signup Page</button></a>
+        </div>
+    </div>
+
+    <script>
+        function showStatus(message, type = 'success') {
+            const statusDiv = document.getElementById('setupStatus');
+            statusDiv.innerHTML = `<div class="${type}">${message}</div>`;
+        }
+        
+        function createNewStudent() {
+            const userData = {
+                firstName: 'New',
+                lastName: 'Student',
+                email: 'newstudent@university.edu',
+                role: 'student',
+                isNewUser: true,
+                hasActivity: false,
+                createdAt: new Date().toISOString(),
+                quizzesTaken: 0,
+                coursesEnrolled: 0,
+                hoursStudied: 0,
+                averageScore: 0,
+                activityHistory: []
+            };
+            
+            addDemoUser(userData);
+            showStatus('New Student created! Login: newstudent@university.edu / password123');
+        }
+        
+        function createExistingStudent() {
+            const userData = {
+                firstName: 'Existing',
+                lastName: 'Student',
+                email: 'student@university.edu',
+                role: 'student',
+                isNewUser: false,
+                hasActivity: true,
+                createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days ago
+                quizzesTaken: 15,
+                coursesEnrolled: 3,
+                hoursStudied: 45,
+                averageScore: 87,
+                activityHistory: [
+                    {
+                        type: 'quiz',
+                        title: 'Mathematics Quiz',
+                        score: 92,
+                        date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
+                    },
+                    {
+                        type: 'course',
+                        title: 'Completed Physics Course',
+                        date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
+                    }
+                ]
+            };
+            
+            addDemoUser(userData);
+            showStatus('Existing Student created! Login: student@university.edu / password123');
+        }
+        
+        function createNewTeacher() {
+            const userData = {
+                firstName: 'New',
+                lastName: 'Teacher',
+                email: 'newteacher@school.edu',
+                role: 'teacher',
+                isNewUser: true,
+                hasActivity: false,
+                createdAt: new Date().toISOString(),
+                classrooms: [],
+                quizzesCreated: 0,
+                studentsManaged: 0
+            };
+            
+            addDemoUser(userData);
+            showStatus('New Teacher created! Login: newteacher@school.edu / password123');
+        }
+        
+        function createExistingTeacher() {
+            const userData = {
+                firstName: 'Existing',
+                lastName: 'Teacher',
+                email: 'teacher@school.edu',
+                role: 'teacher',
+                isNewUser: false,
+                hasActivity: true,
+                createdAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(), // 60 days ago
+                classrooms: [
+                    {
+                        id: '1',
+                        name: 'Mathematics 101',
+                        subject: 'Mathematics',
+                        studentCount: 25
+                    },
+                    {
+                        id: '2',
+                        name: 'Physics Advanced',
+                        subject: 'Physics',
+                        studentCount: 18
+                    }
+                ],
+                quizzesCreated: 12,
+                studentsManaged: 43
+            };
+            
+            addDemoUser(userData);
+            showStatus('Existing Teacher created! Login: teacher@school.edu / password123');
+        }
+        
+        function addDemoUser(userData) {
+            const existingUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+            
+            // Remove existing user with same email
+            const filteredUsers = existingUsers.filter(user => user.email !== userData.email);
+            
+            // Add new user data
+            filteredUsers.push(userData);
+            
+            localStorage.setItem('registeredUsers', JSON.stringify(filteredUsers));
+        }
+        
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all demo data?')) {
+                localStorage.removeItem('registeredUsers');
+                localStorage.removeItem('currentUser');
+                showStatus('All demo data cleared!', 'info');
+            }
+        }
+        
+        // Show current status on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+            if (users.length > 0) {
+                showStatus(`Currently ${users.length} demo users in system.`, 'info');
+            } else {
+                showStatus('No demo users found. Create some using the buttons above.', 'info');
+            }
+        });
+    </script>
+</body>
+</html>

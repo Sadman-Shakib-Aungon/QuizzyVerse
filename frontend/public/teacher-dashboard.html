@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard - QuizzyVerse</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #2d3748;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 800;
+            color: #2d3748;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .notification-btn {
+            position: relative;
+            background: none;
+            border: none;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: #718096;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+
+        .notification-btn:hover {
+            background: #f7fafc;
+            color: #2d3748;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #f56565;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+            background: #f7fafc;
+            border-radius: 12px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .user-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .user-info p {
+            font-size: 12px;
+            color: #718096;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 32px 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .welcome-section {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            border-radius: 20px;
+            padding: 40px;
+            color: white;
+            margin-bottom: 32px;
+        }
+
+        .welcome-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .welcome-subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 24px;
+        }
+
+        .teacher-stats {
+            display: flex;
+            gap: 32px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(72, 187, 120, 0.3);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ed8936, #dd6b20);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(237, 137, 54, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Classroom List */
+        .classroom-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .classroom-item {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            padding: 16px;
+            background: #f7fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .classroom-item:hover {
+            background: white;
+            border-color: #667eea;
+        }
+
+        .classroom-info {
+            flex: 1;
+        }
+
+        .classroom-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 4px;
+        }
+
+        .classroom-details {
+            font-size: 14px;
+            color: #718096;
+        }
+
+        .classroom-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 6px;
+        }
+
+        /* Low Performing Students */
+        .student-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .student-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: #fef5e7;
+            border-radius: 8px;
+            border: 1px solid #f6ad55;
+        }
+
+        .student-info {
+            flex: 1;
+        }
+
+        .student-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 4px;
+        }
+
+        .student-score {
+            font-size: 14px;
+            color: #dd6b20;
+            font-weight: 600;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #718096;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-text {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .empty-subtext {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px 16px;
+            }
+
+            .welcome-section {
+                padding: 24px;
+            }
+
+            .welcome-title {
+                font-size: 24px;
+            }
+
+            .teacher-stats {
+                gap: 20px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .classroom-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .classroom-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="logo-text">QuizzyVerse</div>
+        </div>
+        
+        <div class="header-right">
+            <button class="notification-btn" onclick="openNotifications()">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="notificationBadge">0</span>
+            </button>
+
+            <div class="user-profile">
+                <div class="user-avatar" id="userAvatar">--</div>
+                <div class="user-info">
+                    <h4 id="userName">Teacher</h4>
+                    <p>Teacher</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <h1 class="welcome-title" id="welcomeTitle">Welcome, Teacher!</h1>
+            <p class="welcome-subtitle">Manage your classrooms, create quizzes, and help students succeed</p>
+            
+            <div class="teacher-stats">
+                <div class="stat">
+                    <div class="stat-number" id="classroomCount">0</div>
+                    <div class="stat-label">Active Classrooms</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number" id="studentCount">0</div>
+                    <div class="stat-label">Total Students</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number" id="quizCount">0</div>
+                    <div class="stat-label">Quizzes Created</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Quiz Management -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3 class="card-title">Quiz Management</h3>
+                    <div class="card-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                </div>
+                <p style="color: #718096; margin-bottom: 20px;">Create and manage quizzes for your students</p>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="createQuiz()">
+                        <i class="fas fa-plus"></i>
+                        Create New Quiz
+                    </button>
+                    <button class="btn btn-secondary" onclick="viewQuizzes()">
+                        <i class="fas fa-list"></i>
+                        View All Quizzes
+                    </button>
+                </div>
+            </div>
+
+            <!-- Classroom Management -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3 class="card-title">My Classrooms</h3>
+                    <div class="card-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                </div>
+                
+                <div class="classroom-list" id="classroomList">
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-chalkboard"></i>
+                        </div>
+                        <div class="empty-text">No classrooms yet</div>
+                        <div class="empty-subtext">Create your first classroom to get started</div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-success" onclick="createClassroom()">
+                        <i class="fas fa-plus"></i>
+                        Create Classroom
+                    </button>
+                </div>
+            </div>
+
+            <!-- Low Performing Students -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3 class="card-title">Students Needing Help</h3>
+                    <div class="card-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                </div>
+                <p style="color: #718096; margin-bottom: 20px;">Students with low marks requiring consultation</p>
+                
+                <div class="student-list" id="lowPerformingStudents">
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <div class="empty-text">No students need help currently</div>
+                        <div class="empty-subtext">Students with low marks will appear here</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student Consultation -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3 class="card-title">Student Consultation</h3>
+                    <div class="card-icon">
+                        <i class="fas fa-user-friends"></i>
+                    </div>
+                </div>
+                <p style="color: #718096; margin-bottom: 20px;">Schedule and manage student consultations</p>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-warning" onclick="scheduleConsultation()">
+                        <i class="fas fa-calendar-plus"></i>
+                        Schedule Consultation
+                    </button>
+                    <button class="btn btn-secondary" onclick="viewConsultations()">
+                        <i class="fas fa-calendar"></i>
+                        View Schedule
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Sample data for demonstration
+        let classrooms = [];
+        let lowPerformingStudents = [];
+        
+        // Load user data and customize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            const userData = JSON.parse(localStorage.getItem('currentUser') || '{}');
+
+            if (userData.firstName && userData.lastName) {
+                const fullName = `${userData.firstName} ${userData.lastName}`;
+                const initials = `${userData.firstName.charAt(0)}${userData.lastName.charAt(0)}`;
+
+                document.getElementById('userName').textContent = fullName;
+                document.getElementById('userAvatar').textContent = initials;
+                document.getElementById('welcomeTitle').textContent = `Welcome, ${userData.firstName}!`;
+            } else {
+                // Extract name from email
+                const emailName = extractNameFromEmail(userData.email || 'teacher@example.com');
+                const nameParts = emailName.split(' ');
+                const initials = nameParts.length >= 2 ? `${nameParts[0][0]}${nameParts[1][0]}` : emailName.substring(0, 2);
+
+                document.getElementById('userName').textContent = emailName;
+                document.getElementById('userAvatar').textContent = initials;
+                document.getElementById('welcomeTitle').textContent = `Welcome, ${nameParts[0] || 'Teacher'}!`;
+            }
+
+            updateStats();
+            renderClassrooms();
+            renderLowPerformingStudents();
+            updateNotificationBadge();
+        });
+        
+        function updateStats() {
+            document.getElementById('classroomCount').textContent = classrooms.length;
+            document.getElementById('studentCount').textContent = classrooms.reduce((total, classroom) => total + classroom.studentCount, 0);
+            document.getElementById('quizCount').textContent = '0'; // New teacher starts with 0 quizzes
+        }
+        
+        function renderClassrooms() {
+            const container = document.getElementById('classroomList');
+            
+            if (classrooms.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-chalkboard"></i>
+                        </div>
+                        <div class="empty-text">No classrooms yet</div>
+                        <div class="empty-subtext">Create your first classroom to get started</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = classrooms.map(classroom => `
+                <div class="classroom-item">
+                    <div class="classroom-info">
+                        <div class="classroom-name">${classroom.name}</div>
+                        <div class="classroom-details">${classroom.subject} • ${classroom.studentCount} students</div>
+                    </div>
+                    <div class="classroom-actions">
+                        <button class="btn btn-primary btn-small" onclick="manageClassroom('${classroom.id}')">
+                            <i class="fas fa-cog"></i>
+                            Manage
+                        </button>
+                        <button class="btn btn-warning btn-small" onclick="viewLowMarks('${classroom.id}')">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Low Marks
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function renderLowPerformingStudents() {
+            const container = document.getElementById('lowPerformingStudents');
+            
+            if (lowPerformingStudents.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <div class="empty-text">No students need help currently</div>
+                        <div class="empty-subtext">Students with low marks will appear here</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = lowPerformingStudents.map(student => `
+                <div class="student-item">
+                    <div class="student-info">
+                        <div class="student-name">${student.name}</div>
+                        <div class="student-score">Last Quiz: ${student.score}% • ${student.classroom}</div>
+                    </div>
+                    <button class="btn btn-warning btn-small" onclick="consultStudent('${student.id}')">
+                        <i class="fas fa-user-md"></i>
+                        Consult
+                    </button>
+                </div>
+            `).join('');
+        }
+        
+        // COMPREHENSIVE TEACHER DASHBOARD FUNCTIONS
+
+        // QUIZ MANAGEMENT
+        function createQuiz() {
+            const title = prompt('Enter quiz title:');
+            if (!title) return;
+
+            const subject = prompt('Enter subject:');
+            if (!subject) return;
+
+            const dueDate = prompt('Enter due date (YYYY-MM-DD):');
+            if (!dueDate) return;
+
+            if (classrooms.length === 0) {
+                alert('Please create a classroom first!');
+                return;
+            }
+
+            // For demo, assign to first classroom
+            const classroomId = classrooms[0].id;
+
+            const newQuiz = {
+                id: Date.now().toString(),
+                title: title,
+                subject: subject,
+                classroomId: classroomId,
+                dueDate: dueDate,
+                createdAt: new Date().toISOString(),
+                teacherId: getCurrentUser().email,
+                submissions: []
+            };
+
+            // Add to teacher's quizzes
+            const teacherData = getTeacherData();
+            teacherData.quizzes = teacherData.quizzes || [];
+            teacherData.quizzes.push(newQuiz);
+            saveTeacherData(teacherData);
+
+            // Notify students in classroom
+            notifyStudentsAboutQuiz(newQuiz, classrooms[0]);
+
+            alert(`Quiz "${title}" created and assigned to ${classrooms[0].name}!`);
+            updateStats();
+        }
+
+        function notifyStudentsAboutQuiz(quiz, classroom) {
+            if (!classroom.students) return;
+
+            classroom.students.forEach(student => {
+                const notification = {
+                    id: Date.now().toString() + student.id,
+                    type: 'quiz_assigned',
+                    title: 'New Quiz Available',
+                    message: `"${quiz.title}" has been assigned in ${classroom.name}. Due: ${quiz.dueDate}`,
+                    quizId: quiz.id,
+                    classroomId: classroom.id,
+                    timestamp: new Date().toISOString(),
+                    read: false,
+                    priority: 'high'
+                };
+
+                const studentNotifications = JSON.parse(localStorage.getItem(`notifications_${student.email}`) || '[]');
+                studentNotifications.push(notification);
+                localStorage.setItem(`notifications_${student.email}`, JSON.stringify(studentNotifications));
+            });
+        }
+
+        // CLASSROOM MANAGEMENT
+        function createClassroom() {
+            const className = prompt('Enter classroom name:');
+            if (!className) return;
+
+            const subject = prompt('Enter subject:');
+            if (!subject) return;
+
+            const description = prompt('Enter description (optional):') || '';
+
+            const newClassroom = {
+                id: Date.now().toString(),
+                name: className,
+                subject: subject,
+                description: description,
+                code: Math.random().toString(36).substring(2, 8).toUpperCase(),
+                students: [],
+                createdAt: new Date().toISOString(),
+                teacherId: getCurrentUser().email
+            };
+
+            classrooms.push(newClassroom);
+
+            const teacherData = getTeacherData();
+            teacherData.classrooms = classrooms;
+            saveTeacherData(teacherData);
+
+            updateStats();
+            renderClassrooms();
+
+            alert(`Classroom "${className}" created successfully!\nClass Code: ${newClassroom.code}`);
+        }
+
+        function addStudentToClassroom(classroomId) {
+            const studentEmail = prompt('Enter student email to add:');
+            if (!studentEmail) return;
+
+            const classroom = classrooms.find(c => c.id === classroomId);
+            if (!classroom) return;
+
+            // Check if student already exists
+            if (classroom.students.find(s => s.email === studentEmail)) {
+                alert('Student is already in this classroom!');
+                return;
+            }
+
+            const newStudent = {
+                id: Date.now().toString(),
+                email: studentEmail,
+                name: extractNameFromEmail(studentEmail),
+                joinedAt: new Date().toISOString(),
+                scores: [],
+                averageScore: 0
+            };
+
+            classroom.students.push(newStudent);
+
+            const teacherData = getTeacherData();
+            teacherData.classrooms = classrooms;
+            saveTeacherData(teacherData);
+
+            // Send invitation to student
+            sendStudentInvitation(studentEmail, classroomId, classroom.name);
+
+            updateStats();
+            renderClassrooms();
+
+            alert(`Invitation sent to ${studentEmail}!`);
+        }
+
+        function sendStudentInvitation(studentEmail, classroomId, classroomName) {
+            const user = getCurrentUser();
+            const invitation = {
+                id: Date.now().toString(),
+                type: 'course_invitation',
+                title: 'Course Invitation',
+                message: `${user.firstName} ${user.lastName} has invited you to join "${classroomName}". Click to accept and start learning!`,
+                studentEmail: studentEmail,
+                classroomId: classroomId,
+                classroomName: classroomName,
+                teacherId: user.email,
+                teacherName: `${user.firstName} ${user.lastName}`,
+                timestamp: new Date().toISOString(),
+                read: false,
+                priority: 'medium',
+                actionRequired: true
+            };
+
+            const studentNotifications = JSON.parse(localStorage.getItem(`notifications_${studentEmail}`) || '[]');
+            studentNotifications.push(invitation);
+            localStorage.setItem(`notifications_${studentEmail}`, JSON.stringify(studentNotifications));
+        }
+
+        // CONSULTATION MANAGEMENT
+        function scheduleConsultation() {
+            if (classrooms.length === 0) {
+                alert('Please create a classroom and add students first!');
+                return;
+            }
+
+            // Get all students from all classrooms
+            const allStudents = [];
+            classrooms.forEach(classroom => {
+                if (classroom.students) {
+                    classroom.students.forEach(student => {
+                        allStudents.push({
+                            ...student,
+                            classroomName: classroom.name
+                        });
+                    });
+                }
+            });
+
+            if (allStudents.length === 0) {
+                alert('No students found. Please add students to your classrooms first!');
+                return;
+            }
+
+            const studentEmail = prompt('Enter student email for consultation:');
+            if (!studentEmail) return;
+
+            const student = allStudents.find(s => s.email === studentEmail);
+            if (!student) {
+                alert('Student not found in your classrooms!');
+                return;
+            }
+
+            const topic = prompt('Enter consultation topic:');
+            if (!topic) return;
+
+            const scheduledDate = prompt('Enter date (YYYY-MM-DD):');
+            if (!scheduledDate) return;
+
+            const scheduledTime = prompt('Enter time (HH:MM):');
+            if (!scheduledTime) return;
+
+            const consultation = {
+                id: Date.now().toString(),
+                studentId: student.id,
+                studentName: student.name,
+                studentEmail: student.email,
+                topic: topic,
+                scheduledDate: scheduledDate,
+                scheduledTime: scheduledTime,
+                status: 'scheduled',
+                createdAt: new Date().toISOString(),
+                teacherId: getCurrentUser().email
+            };
+
+            const teacherData = getTeacherData();
+            teacherData.consultations = teacherData.consultations || [];
+            teacherData.consultations.push(consultation);
+            saveTeacherData(teacherData);
+
+            // Send consultation invitation
+            sendConsultationInvitation(consultation);
+
+            alert(`Consultation scheduled with ${student.name} for ${scheduledDate} at ${scheduledTime}`);
+        }
+
+        function sendConsultationInvitation(consultation) {
+            const user = getCurrentUser();
+            const invitation = {
+                id: Date.now().toString(),
+                type: 'consultation_scheduled',
+                title: 'Consultation Scheduled',
+                message: `${user.firstName} ${user.lastName} has scheduled a consultation with you for "${consultation.topic}" on ${consultation.scheduledDate} at ${consultation.scheduledTime}`,
+                consultationId: consultation.id,
+                teacherName: `${user.firstName} ${user.lastName}`,
+                topic: consultation.topic,
+                scheduledDate: consultation.scheduledDate,
+                scheduledTime: consultation.scheduledTime,
+                timestamp: new Date().toISOString(),
+                read: false,
+                priority: 'high',
+                actionRequired: true
+            };
+
+            const studentNotifications = JSON.parse(localStorage.getItem(`notifications_${consultation.studentEmail}`) || '[]');
+            studentNotifications.push(invitation);
+            localStorage.setItem(`notifications_${consultation.studentEmail}`, JSON.stringify(studentNotifications));
+        }
+
+        // LOW MARKS DETECTION
+        function checkLowPerformingStudents() {
+            const lowPerformers = [];
+
+            classrooms.forEach(classroom => {
+                if (classroom.students) {
+                    classroom.students.forEach(student => {
+                        // Simulate some students having low scores for demo
+                        const hasLowScores = Math.random() < 0.3; // 30% chance
+                        if (hasLowScores) {
+                            const averageScore = Math.floor(Math.random() * 40) + 20; // 20-60%
+                            lowPerformers.push({
+                                ...student,
+                                classroomName: classroom.name,
+                                averageScore: averageScore,
+                                needsConsultation: true
+                            });
+                        }
+                    });
+                }
+            });
+
+            if (lowPerformers.length > 0) {
+                // Generate notifications for low performing students
+                lowPerformers.forEach(student => {
+                    const notification = {
+                        id: Date.now().toString() + student.id,
+                        type: 'low_score',
+                        title: 'Academic Support Available',
+                        message: `Your recent performance in ${student.classroomName} (Average: ${student.averageScore}%) indicates you may benefit from additional support. Your teacher recommends scheduling a consultation.`,
+                        studentId: student.id,
+                        classroomName: student.classroomName,
+                        averageScore: student.averageScore,
+                        timestamp: new Date().toISOString(),
+                        read: false,
+                        priority: 'high'
+                    };
+
+                    const studentNotifications = JSON.parse(localStorage.getItem(`notifications_${student.email}`) || '[]');
+                    studentNotifications.push(notification);
+                    localStorage.setItem(`notifications_${student.email}`, JSON.stringify(studentNotifications));
+                });
+
+                alert(`Found ${lowPerformers.length} students who may need consultation. Notifications sent to students.`);
+            } else {
+                alert('All students are performing well! No consultations needed at this time.');
+            }
+        }
+
+        // ANNOUNCEMENT SYSTEM
+        function sendAnnouncement() {
+            if (classrooms.length === 0) {
+                alert('Please create a classroom first!');
+                return;
+            }
+
+            const title = prompt('Enter announcement title:');
+            if (!title) return;
+
+            const message = prompt('Enter announcement message:');
+            if (!message) return;
+
+            const priority = prompt('Enter priority (high/medium/low):') || 'medium';
+
+            // For demo, send to first classroom
+            const classroom = classrooms[0];
+
+            const announcement = {
+                id: Date.now().toString(),
+                title: title,
+                message: message,
+                classroomId: classroom.id,
+                priority: priority,
+                createdAt: new Date().toISOString(),
+                teacherId: getCurrentUser().email
+            };
+
+            // Send to all students in classroom
+            if (classroom.students) {
+                classroom.students.forEach(student => {
+                    const notification = {
+                        id: Date.now().toString() + student.id,
+                        type: 'announcement',
+                        title: `📢 ${title}`,
+                        message: `${message} - ${classroom.name}`,
+                        classroomId: classroom.id,
+                        timestamp: new Date().toISOString(),
+                        read: false,
+                        priority: priority
+                    };
+
+                    const studentNotifications = JSON.parse(localStorage.getItem(`notifications_${student.email}`) || '[]');
+                    studentNotifications.push(notification);
+                    localStorage.setItem(`notifications_${student.email}`, JSON.stringify(studentNotifications));
+                });
+
+                alert(`Announcement sent to ${classroom.students.length} students in ${classroom.name}!`);
+            }
+        }
+
+        // UTILITY FUNCTIONS
+        function extractNameFromEmail(email) {
+            const localPart = email.split('@')[0];
+            const cleanName = localPart.replace(/[._]/g, ' ');
+            return cleanName.replace(/\b\w/g, l => l.toUpperCase());
+        }
+
+        function getCurrentUser() {
+            return JSON.parse(localStorage.getItem('currentUser') || '{}');
+        }
+
+        function getTeacherData() {
+            const user = getCurrentUser();
+            return JSON.parse(localStorage.getItem(`teacher_${user.email}`) || '{}');
+        }
+
+        function saveTeacherData(data) {
+            const user = getCurrentUser();
+            localStorage.setItem(`teacher_${user.email}`, JSON.stringify(data));
+        }
+
+        // NOTIFICATION FUNCTIONS
+        function updateNotificationBadge() {
+            const user = getCurrentUser();
+            const notifications = JSON.parse(localStorage.getItem(`notifications_${user.email}`) || '[]');
+            const unreadCount = notifications.filter(n => !n.read).length;
+
+            const badge = document.getElementById('notificationBadge');
+            if (badge) {
+                badge.textContent = unreadCount;
+                badge.style.display = unreadCount > 0 ? 'flex' : 'none';
+            }
+        }
+
+        function openNotifications() {
+            window.location.href = 'notifications.html';
+        }
+
+        // Update notification badge periodically
+        setInterval(updateNotificationBadge, 30000); // Update every 30 seconds
+    </script>
+</body>
+</html>

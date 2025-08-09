@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - QuizzyVerse</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #2d3748;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 800;
+            color: #2d3748;
+        }
+
+        .back-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: #5a67d8;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 32px 24px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .notifications-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .notifications-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: #2d3748;
+        }
+
+        .mark-all-read {
+            background: #48bb78;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .mark-all-read:hover {
+            background: #38a169;
+        }
+
+        /* Notification Filters */
+        .notification-filters {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .filter-button {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .filter-button.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .filter-button:hover {
+            border-color: #667eea;
+        }
+
+        /* Notifications List */
+        .notifications-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .notification-item {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .notification-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .notification-item.unread {
+            border-left: 4px solid #667eea;
+            background: #f7fafc;
+        }
+
+        .notification-item.high-priority {
+            border-left: 4px solid #f56565;
+        }
+
+        .notification-item.medium-priority {
+            border-left: 4px solid #ed8936;
+        }
+
+        .notification-item.low-priority {
+            border-left: 4px solid #48bb78;
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            font-size: 18px;
+            color: white;
+        }
+
+        .notification-icon.quiz {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .notification-icon.consultation {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+        }
+
+        .notification-icon.course {
+            background: linear-gradient(135deg, #ed8936, #dd6b20);
+        }
+
+        .notification-icon.announcement {
+            background: linear-gradient(135deg, #9f7aea, #805ad5);
+        }
+
+        .notification-icon.lowmarks {
+            background: linear-gradient(135deg, #f56565, #e53e3e);
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 4px;
+        }
+
+        .notification-message {
+            font-size: 14px;
+            color: #718096;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .notification-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #a0aec0;
+        }
+
+        .notification-time {
+            font-weight: 500;
+        }
+
+        .notification-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .action-button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-button.accept {
+            background: #48bb78;
+            color: white;
+        }
+
+        .action-button.accept:hover {
+            background: #38a169;
+        }
+
+        .action-button.decline {
+            background: #f56565;
+            color: white;
+        }
+
+        .action-button.decline:hover {
+            background: #e53e3e;
+        }
+
+        .action-button.view {
+            background: #667eea;
+            color: white;
+        }
+
+        .action-button.view:hover {
+            background: #5a67d8;
+        }
+
+        .delete-button {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: none;
+            border: none;
+            color: #a0aec0;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .delete-button:hover {
+            color: #f56565;
+            background: #fed7d7;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #718096;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .empty-description {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px 16px;
+            }
+
+            .notifications-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .notification-filters {
+                justify-content: center;
+            }
+
+            .notification-item {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="logo-text">QuizzyVerse</div>
+        </div>
+        
+        <button class="back-button" onclick="goBack()">
+            <i class="fas fa-arrow-left"></i>
+            Back to Dashboard
+        </button>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="notifications-header">
+            <h1 class="notifications-title">Notifications</h1>
+            <button class="mark-all-read" onclick="markAllAsRead()">
+                <i class="fas fa-check-double"></i>
+                Mark All as Read
+            </button>
+        </div>
+
+        <!-- Notification Filters -->
+        <div class="notification-filters">
+            <button class="filter-button active" data-filter="all">All</button>
+            <button class="filter-button" data-filter="quiz">Quizzes</button>
+            <button class="filter-button" data-filter="consultation">Consultations</button>
+            <button class="filter-button" data-filter="course">Courses</button>
+            <button class="filter-button" data-filter="announcement">Announcements</button>
+            <button class="filter-button" data-filter="unread">Unread</button>
+        </div>
+
+        <!-- Notifications List -->
+        <div class="notifications-list" id="notificationsList">
+            <!-- Notifications will be loaded here -->
+        </div>
+    </main>
+
+    <script>
+        let notifications = [];
+        let currentFilter = 'all';
+
+        // Load notifications on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNotifications();
+            setupFilterButtons();
+        });
+
+        function loadNotifications() {
+            const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const userNotifications = JSON.parse(localStorage.getItem(`notifications_${user.email}`) || '[]');
+            
+            notifications = userNotifications.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            renderNotifications();
+        }
+
+        function renderNotifications() {
+            const container = document.getElementById('notificationsList');
+            let filteredNotifications = notifications;
+
+            // Apply filter
+            if (currentFilter !== 'all') {
+                if (currentFilter === 'unread') {
+                    filteredNotifications = notifications.filter(n => !n.read);
+                } else {
+                    filteredNotifications = notifications.filter(n => n.type.includes(currentFilter));
+                }
+            }
+
+            if (filteredNotifications.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-bell-slash"></i>
+                        </div>
+                        <div class="empty-title">No notifications</div>
+                        <div class="empty-description">
+                            ${currentFilter === 'all' ? 'You have no notifications at the moment.' : `No ${currentFilter} notifications found.`}
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filteredNotifications.map(notification => `
+                <div class="notification-item ${notification.read ? 'read' : 'unread'} ${notification.priority || 'medium'}-priority" 
+                     onclick="markAsRead('${notification.id}')">
+                    <button class="delete-button" onclick="deleteNotification('${notification.id}', event)">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    
+                    <div style="display: flex; align-items: flex-start;">
+                        <div class="notification-icon ${getNotificationType(notification.type)}">
+                            ${getNotificationIcon(notification.type)}
+                        </div>
+                        
+                        <div class="notification-content">
+                            <div class="notification-title">${notification.title}</div>
+                            <div class="notification-message">${notification.message}</div>
+                            
+                            <div class="notification-meta">
+                                <span class="notification-time">${formatTime(notification.timestamp)}</span>
+                                <span class="notification-priority">${(notification.priority || 'medium').toUpperCase()}</span>
+                            </div>
+                            
+                            ${notification.actionRequired ? `
+                                <div class="notification-actions">
+                                    ${getActionButtons(notification)}
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getNotificationType(type) {
+            if (type.includes('quiz')) return 'quiz';
+            if (type.includes('consultation')) return 'consultation';
+            if (type.includes('course')) return 'course';
+            if (type.includes('announcement')) return 'announcement';
+            if (type.includes('low')) return 'lowmarks';
+            return 'quiz';
+        }
+
+        function getNotificationIcon(type) {
+            const icons = {
+                quiz_assigned: '<i class="fas fa-clipboard-list"></i>',
+                consultation_scheduled: '<i class="fas fa-user-md"></i>',
+                course_invitation: '<i class="fas fa-book-open"></i>',
+                announcement: '<i class="fas fa-bullhorn"></i>',
+                low_score: '<i class="fas fa-exclamation-triangle"></i>'
+            };
+            return icons[type] || '<i class="fas fa-bell"></i>';
+        }
+
+        function getActionButtons(notification) {
+            if (notification.type === 'course_invitation') {
+                return `
+                    <button class="action-button accept" onclick="acceptCourseInvitation('${notification.id}', event)">
+                        Accept
+                    </button>
+                    <button class="action-button decline" onclick="declineInvitation('${notification.id}', event)">
+                        Decline
+                    </button>
+                `;
+            }
+            
+            if (notification.type === 'consultation_scheduled') {
+                return `
+                    <button class="action-button accept" onclick="acceptConsultation('${notification.id}', event)">
+                        Accept
+                    </button>
+                    <button class="action-button decline" onclick="declineInvitation('${notification.id}', event)">
+                        Decline
+                    </button>
+                `;
+            }
+            
+            if (notification.type === 'quiz_assigned') {
+                return `
+                    <button class="action-button view" onclick="takeQuiz('${notification.quizId}', event)">
+                        Take Quiz
+                    </button>
+                `;
+            }
+            
+            return '';
+        }
+
+        function formatTime(timestamp) {
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diffInHours = (now - date) / (1000 * 60 * 60);
+            
+            if (diffInHours < 1) {
+                return 'Just now';
+            } else if (diffInHours < 24) {
+                return `${Math.floor(diffInHours)} hours ago`;
+            } else {
+                return date.toLocaleDateString();
+            }
+        }
+
+        function setupFilterButtons() {
+            document.querySelectorAll('.filter-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-button').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.dataset.filter;
+                    renderNotifications();
+                });
+            });
+        }
+
+        function markAsRead(notificationId) {
+            const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const userNotifications = JSON.parse(localStorage.getItem(`notifications_${user.email}`) || '[]');
+            
+            const updatedNotifications = userNotifications.map(n => 
+                n.id === notificationId ? { ...n, read: true } : n
+            );
+            
+            localStorage.setItem(`notifications_${user.email}`, JSON.stringify(updatedNotifications));
+            loadNotifications();
+        }
+
+        function markAllAsRead() {
+            const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const userNotifications = JSON.parse(localStorage.getItem(`notifications_${user.email}`) || '[]');
+            
+            const updatedNotifications = userNotifications.map(n => ({ ...n, read: true }));
+            localStorage.setItem(`notifications_${user.email}`, JSON.stringify(updatedNotifications));
+            
+            loadNotifications();
+            alert('All notifications marked as read!');
+        }
+
+        function deleteNotification(notificationId, event) {
+            event.stopPropagation();
+            
+            if (!confirm('Are you sure you want to delete this notification?')) return;
+            
+            const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const userNotifications = JSON.parse(localStorage.getItem(`notifications_${user.email}`) || '[]');
+            
+            const updatedNotifications = userNotifications.filter(n => n.id !== notificationId);
+            localStorage.setItem(`notifications_${user.email}`, JSON.stringify(updatedNotifications));
+            
+            loadNotifications();
+        }
+
+        function acceptCourseInvitation(notificationId, event) {
+            event.stopPropagation();
+            
+            const notification = notifications.find(n => n.id === notificationId);
+            if (!notification) return;
+            
+            // Mark as read and accepted
+            markAsRead(notificationId);
+            
+            alert(`Course invitation accepted!\nYou have joined: ${notification.classroomName}\nTeacher: ${notification.teacherName}`);
+            
+            // Redirect to student dashboard
+            setTimeout(() => {
+                window.location.href = 'student-dashboard.html';
+            }, 1000);
+        }
+
+        function acceptConsultation(notificationId, event) {
+            event.stopPropagation();
+            
+            const notification = notifications.find(n => n.id === notificationId);
+            if (!notification) return;
+            
+            // Mark as read and accepted
+            markAsRead(notificationId);
+            
+            alert(`Consultation accepted!\nTeacher: ${notification.teacherName}\nTopic: ${notification.topic}\nDate: ${notification.scheduledDate} at ${notification.scheduledTime}`);
+        }
+
+        function declineInvitation(notificationId, event) {
+            event.stopPropagation();
+            
+            if (!confirm('Are you sure you want to decline this invitation?')) return;
+            
+            markAsRead(notificationId);
+            alert('Invitation declined.');
+        }
+
+        function takeQuiz(quizId, event) {
+            event.stopPropagation();
+            
+            alert('Redirecting to quiz...');
+            // In a real app, this would redirect to the quiz page
+            window.location.href = 'student-dashboard.html';
+        }
+
+        function goBack() {
+            const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            
+            if (user.role === 'teacher') {
+                window.location.href = 'teacher-dashboard.html';
+            } else {
+                window.location.href = user.hasActivity ? 'dashboard.html' : 'student-dashboard.html';
+            }
+        }
+    </script>
+</body>
+</html>
