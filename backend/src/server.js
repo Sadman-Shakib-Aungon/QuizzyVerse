@@ -10,6 +10,7 @@ import parentNotificationRoutes from './routes/parentNotificationRoutes.js';
 import consultationRoutes from './routes/consultationRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import quizRoutes from './routes/quizRoutes.js';
+import classroomRoutes from './routes/classroomRoutes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
@@ -28,6 +29,11 @@ mongoose.connect('mongodb://localhost:27017/quizzyverse')
 .then(() => console.log('MongoDB connected successfully'))
 .catch((err) => console.error('MongoDB connection error:', err));
 
+// Health check endpoint (no auth required)
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'OK', message: 'QuizzyVerse API is running' });
+});
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
@@ -37,11 +43,7 @@ app.use('/api/feedback', feedbackRoutes);
 app.use('/api/parent-notifications', parentNotificationRoutes);
 app.use('/api/consultations', consultationRoutes);
 app.use('/api/quizzes', quizRoutes);
-
-// Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', message: 'QuizzyVerse API is running' });
-});
+app.use('/api/classrooms', classroomRoutes);
 
 // Serve frontend build (for production / live)
 const __filename = fileURLToPath(import.meta.url);

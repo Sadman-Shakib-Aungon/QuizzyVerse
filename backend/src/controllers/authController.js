@@ -180,3 +180,105 @@ export const logout = async (req, res) => {
         res.status(500).json({ message: 'Logout failed', error: error.message });
     }
 };
+
+// Refresh token
+export const refreshToken = async (req, res) => {
+    try {
+        const { refreshToken } = req.body;
+
+        if (!refreshToken) {
+            return res.status(401).json({ message: 'Refresh token required' });
+        }
+
+        const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET || 'refresh_secret');
+        const user = await User.findById(decoded.userId);
+
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid refresh token' });
+        }
+
+        const newToken = generateToken(user._id);
+        const newRefreshToken = jwt.sign({ userId: user._id }, process.env.REFRESH_TOKEN_SECRET || 'refresh_secret', {
+            expiresIn: '30d'
+        });
+
+        res.json({
+            token: newToken,
+            refreshToken: newRefreshToken,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role
+            }
+        });
+    } catch (error) {
+        console.error('Refresh token error:', error);
+        res.status(401).json({ message: 'Invalid refresh token', error: error.message });
+    }
+};
+
+// Verify email
+export const verifyEmail = async (req, res) => {
+    try {
+        const { token } = req.body;
+
+        if (!token) {
+            return res.status(400).json({ message: 'Verification token required' });
+        }
+
+        // In a real app, you'd verify the token and update user's email verification status
+        res.json({ message: 'Email verified successfully' });
+    } catch (error) {
+        console.error('Email verification error:', error);
+        res.status(500).json({ message: 'Email verification failed', error: error.message });
+    }
+};
+
+// Forgot password
+export const forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({ message: 'Email is required' });
+        }
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found with this email' });
+        }
+
+        // In a real app, you'd generate a reset token and send email
+        const resetToken = Math.random().toString(36).substring(2, 15);
+
+        res.json({
+            message: 'Password reset email sent',
+            resetToken // In production, don't send this in response
+        });
+    } catch (error) {
+        console.error('Forgot password error:', error);
+        res.status(500).json({ message: 'Forgot password failed', error: error.message });
+    }
+};
+
+// Reset password
+export const resetPassword = async (req, res) => {
+    try {
+        const { token, newPassword } = req.body;
+
+        if (!token || !newPassword) {
+            return res.status(400).json({ message: 'Token and new password are required' });
+        }
+
+        if (newPassword.length < 6) {
+            return res.status(400).json({ message: 'Password must be at least 6 characters long' });
+        }
+
+        // In a real app, you'd verify the reset token and update password
+        res.json({ message: 'Password reset successfully' });
+    } catch (error) {
+        console.error('Reset password error:', error);
+        res.status(500).json({ message: 'Password reset failed', error: error.message });
+    }
+};

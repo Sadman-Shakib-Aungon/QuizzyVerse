@@ -15,6 +15,11 @@ import {
 
 const router = express.Router();
 
+// Test route (no auth required)
+router.get('/test', (req, res) => {
+    res.json({ message: 'Quiz routes working', timestamp: new Date().toISOString() });
+});
+
 // All routes require authentication
 router.use(authenticateToken);
 
