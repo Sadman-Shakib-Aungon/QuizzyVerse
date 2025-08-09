@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Navbar = ({ isLoggedIn, onLogout }) => (
-  <nav>
+  <nav style={{ display: 'flex', gap: 12, padding: 12, borderBottom: '1px solid #eee' }}>
     <Link to="/">Home</Link>
     {isLoggedIn ? (
       <>

@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import HtmlLoginPage from './pages/HtmlLoginPage';
+import Navbar from './components/Navbar';
+
 import Dashboard from './components/Dashboard';
 import TeacherDashboard from './components/TeacherDashboard';
 import StudentDashboard from './components/StudentDashboard';
@@ -92,6 +95,7 @@ function App() {
   return (
     <Router>
       <div className="App">
+        <Navbar isLoggedIn={!!user} onLogout={handleLogout} />
         <Routes>
           <Route
             path="/login"
@@ -135,13 +139,14 @@ function App() {
               )
             }
           />
+          <Route path="/html-login" element={<HtmlLoginPage />} />
           <Route
             path="/"
             element={
               user ? (
                 <Navigate to="/dashboard" replace />
               ) : (
-                <Navigate to="/login" replace />
+                <Navigate to="/html-login" replace />
               )
             }
           />
